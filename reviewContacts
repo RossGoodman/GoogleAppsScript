@@ -1,0 +1,37 @@
+function reviewContacts() {
+  var contacts=ContactsApp.getContacts()
+  var contactCount=contacts.length
+  var randID=Math.ceil(Math.random()*contactCount)
+  var aContact=contacts[randID]
+  var contactArray = aContact.getId().split('/')
+  var contactID = contactArray[contactArray.length - 1]
+  Logger.log(contactID)
+  var contactName = aContact.getFullName()
+  Logger.log(contactName)
+  if (aContact.getCompanies().length > 0) {
+    var companyName = aContact.getCompanies()[0].getCompanyName()
+    }
+  else {
+    var companyName = ""
+    }
+  Logger.log(companyName)
+  if (aContact.getEmails().length > 0){
+    var emailAddress = aContact.getEmails()[0].getAddress()
+  }
+  else {
+    var emailAddress = ""
+  }
+  Logger.log(emailAddress)
+  var strMessage = 'Please review the contact information for ' + contactName + ' from ' +companyName +'.\n'
+  strMessage += 'Send an email to: ' + emailAddress + '.\n'
+  strMessage += 'Edit the contact https://www.google.com/contacts/#contact/' + contactID + ' ' + contactName + '.\n'
+  strMessage += 'Search LinkedIn http://www.linkedin.com/search/fpsearch?type=people&keywords=' + encodeURI(contactName) + '.\n'
+  strMessage += 'Search Facebook https://www.facebook.com/search/results.php?q=' + encodeURI(contactName) + '.\n'
+  strMessage += 'Search Twitter https://twitter.com/search?q=' + encodeURI(contactName) + '.\n'
+  
+  Logger.log(strMessage);
+  GmailApp.sendEmail(Session.getEffectiveUser().getEmail(), 'Review Contact - ' + contactName + ' from ' + companyName , strMessage);
+//  UrlFetchApp.fetch("https://script.google.com/macros/s/AKfycbwG7J3xWQlljkIzkh_rOBhNPLAqriHvScwroIg1RFXYnWcJVd99/exec?scriptName=reviewContacts");
+  RGLibrary.logScriptExecution('reviewContacts')
+};
+
