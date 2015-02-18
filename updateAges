@@ -1,0 +1,19 @@
+function updateAges() {
+  var group = ContactsApp.getContactGroup('System Group: My Contacts');
+  var contacts = group.getContacts();
+  for (var aContactCount in contacts) {
+    var aContact = contacts[aContactCount];
+    var arrAge = aContact.getCustomFields('Age');
+    for (var ageCount in arrAge) {
+      var aAge = arrAge[ageCount];
+      aAge.deleteCustomField();
+    }
+    var aBirthday = aContact.getDates(ContactsApp.Field.BIRTHDAY);
+    if (aBirthday.length > 0) { 
+      var strDOB = aBirthday[0].getYear() + '/' + aBirthday[0].getMonth() + '/' + aBirthday[0].getDay();
+      var intAge = Math.floor((Date.now() - Date.parse(strDOB)) / (24 * 3600 * 365.25 * 1000));
+      aContact.addCustomField('Age', intAge)
+      Logger.log('Updated ' + aContact.getFullName() + ' to add the age ' + intAge)
+    }
+  }
+};
